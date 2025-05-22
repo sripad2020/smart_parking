@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parking Info Form</title>
+  <style>
+    body {
+      background-color: #f0f4f8;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    form {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<form action="/submit" method="post">
+  <h2>Parking Data Entry</h2>
+
+  <label for="spot_id">Parking Spot ID</label>
+  <input type="text" id="spot_id" name="Parking_Spot_ID" required>
+
+  <label for="pressure">Sensor Reading Pressure</label>
+  <input type="number" step="any" id="pressure" name="Sensor_Reading_Pressure" required>
+
+  <label for="weight">Vehicle Type Weight (kg)</label>
+  <input type="number" step="any" id="weight" name="Vehicle_Type_Weight" required>
+
+  <label for="height">Vehicle Type Height (m)</label>
+  <input type="number" step="any" id="height" name="Vehicle_Type_Height" required>
+
+  <label for="user_type">User Type</label>
+  <select id="user_type" name="User_Type" required>
+    <option value="">--Select--</option>
+    <option value="Visitor">Visitor</option>
+    <option value="Member">Member</option>
+    <option value="Staff">Staff</option>
+  </select>
+
+  <label for="temperature">Weather Temperature (°C)</label>
+  <input type="number" step="any" id="temperature" name="Weather_Temperature" required>
+
+  <label for="traffic">Nearby Traffic Level</label>
+  <select id="traffic" name="Nearby_Traffic_Level" required>
+    <option value="">--Select--</option>
+    <option value="Low">Low</option>
+    <option value="Medium">Medium</option>
+    <option value="High">High</option>
+  </select>
+
+  <label for="entry_time">Entry Time</label>
+  <input type="time" id="entry_time" name="Entry_Time" required>
+
+  <label for="payment">Payment Status</label>
+  <select id="payment" name="Payment_Status" required>
+    <option value="">--Select--</option>
+    <option value="Paid">Paid</option>
+    <option value="Unpaid">Unpaid</option>
+    <option value="Pending">Pending</option>
+  </select>
+
+  <label for="ultrasonic">Sensor Reading Ultrasonic</label>
+  <input type="number" step="any" id="ultrasonic" name="Sensor_Reading_Ultrasonic" required>
+
+  <label for="duration">Parking Duration (minutes)</label>
+  <input type="number" id="duration" name="Parking_Duration" required>
+
+  <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>

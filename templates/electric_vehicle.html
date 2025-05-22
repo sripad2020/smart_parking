@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parking Spot Data Entry</title>
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        form {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #004a99;
+        }
+    </style>
+</head>
+<body>
+
+<form action="/submit" method="post">
+    <h2>Parking Spot Data Entry</h2>
+
+    <label for="spot_id">Parking Spot ID</label>
+    <input type="text" id="spot_id" name="Parking_Spot_ID" required>
+
+    <label for="sensor">Sensor Reading Proximity</label>
+    <input type="number" step="any" id="sensor" name="Sensor_Reading_Proximity" required>
+
+    <label for="vehicle_weight">Vehicle Type Weight</label>
+    <select id="vehicle_weight" name="Vehicle_Type_Weight" required>
+        <option value="">--Select--</option>
+        <option value="Light">Light</option>
+        <option value="Medium">Medium</option>
+        <option value="Heavy">Heavy</option>
+    </select>
+
+    <label for="exit_time">Exit Time</label>
+    <input type="time" id="exit_time" name="Exit_Time" required>
+
+    <label for="reserved">Reserved Status</label>
+    <select id="reserved" name="Reserved_Status" required>
+        <option value="">--Select--</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
+
+    <label for="occupancy">Occupancy Rate (%)</label>
+    <input type="number" step="any" id="occupancy" name="Occupancy_Rate" required>
+
+    <label for="section">Parking Lot Section</label>
+    <select id="section" name="Parking_Lot_Section" required>
+        <option value="">--Select--</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <!-- Add more as needed -->
+    </select>
+
+    <label for="duration">Parking Duration (minutes)</label>
+    <input type="number" id="duration" name="Parking_Duration" required>
+
+    <label for="noise">Environmental Noise Level (dB)</label>
+    <input type="number" step="any" id="noise" name="Environmental_Noise_Level" required>
+
+    <label for="proximity">Proximity To Exit (meters)</label>
+    <input type="number" step="any" id="proximity" name="Proximity_To_Exit" required>
+
+    <label for="history">User Parking History (visits/month)</label>
+    <input type="number" step="any" id="history" name="User_Parking_History" required>
+
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>
