@@ -25,6 +25,10 @@ print(data.isna().sum())
 print(data.describe())
 print(len(data.columns))
 
+print('------------------------------------')
+print(data.Parking_Lot_Section.value_counts())
+print('--------------------------------------')
+print(data.Reserved_Status.value_counts())
 
 data['Timestamp'] = pd.to_datetime(data['Timestamp']).dt.hour
 

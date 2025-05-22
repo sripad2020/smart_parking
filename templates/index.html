@@ -2,9 +2,257 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Parking Management System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter and Orbitron for futuristic look) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #0f172a, #1e3a8a, #0f172a);
+            color: #e2e8f0;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        #parking-scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(15, 23, 42, 0.2);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            max-width: 700px;
+            margin: auto;
+            padding: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .button {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.4s ease;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        @media (max-width: 640px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    <!-- 3D Parking Scene -->
+    <div id="parking-scene"></div>
 
+    <!-- Main Container -->
+    <div class="container flex flex-col items-center justify-center min-h-screen p-6 mx-4 sm:mx-auto">
+        <h1 class="title mb-6 animate-fadeInUp">Smart Parking Management</h1>
+        <p class="text-lg text-gray-300 mb-10 text-center max-w-md animate-fadeInUp" style="animation-delay: 0.2s;">
+            Experience the future of parking with our IIoT-powered system. Manage electric vehicles, reservations, and parking data seamlessly.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 animate-fadeInUp" style="animation-delay: 0.4s;">
+            <a href="/electric" class="button bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-blue-600 hover:to-blue-800 animate-pulse">
+                Electric Vehicle Entry
+            </a>
+            <a href="/parking" class="button bg-gradient-to-r from-purple-500 to-purple-700 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:from-purple-600 hover:to-purple-800 animate-pulse">
+                Parking Data Entry
+            </a>
+        </div>
+    </div>
+
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.153.0/build/three.min.js"></script>
+    <!-- KUTE.js -->
+    <script src="https://cdn.jsdelivr.net/npm/kute.js@2.1.7/dist/kute.min.js"></script>
+    <script>
+        // Enhanced Particles.js Configuration
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 120, density: { enable: true, value_area: 800 } },
+                color: { value: ["#60a5fa", "#a855f7", "#4ade80", "#facc15"] },
+                shape: { type: ["circle", "triangle", "star"], stroke: { width: 0 } },
+                opacity: { value: 0.7, random: true, anim: { enable: true, speed: 1.5, opacity_min: 0.2 } },
+                size: { value: 3, random: true, anim: { enable: true, speed: 3, size_min: 0.5 } },
+                line_linked: {
+                    enable: true,
+                    distance: 100,
+                    color: "#93c5fd",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "bubble" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 150, line_linked: { opacity: 0.8 } },
+                    bubble: { distance: 200, size: 6, duration: 0.3, opacity: 0.5 }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Three.js 3D Parking Lot Visualization
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('parking-scene').appendChild(renderer.domElement);
+
+        // Create a simple parking lot grid
+        const gridGeometry = new THREE.PlaneGeometry(20, 10);
+        const gridMaterial = new THREE.MeshBasicMaterial({ color: 0x93c5fd, wireframe: true });
+        const grid = new THREE.Mesh(gridGeometry, gridMaterial);
+        grid.rotation.x = -Math.PI / 2;
+        scene.add(grid);
+
+        // Add parking spaces (simplified as cubes)
+        const spaceGeometry = new THREE.BoxGeometry(1, 0.1, 2);
+        const spaceMaterial = new THREE.MeshBasicMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.5 });
+        for (let i = -8; i <= 8; i += 4) {
+            for (let j = -4; j <= 4; j += 4) {
+                const space = new THREE.Mesh(spaceGeometry, spaceMaterial);
+                space.position.set(i, 0.05, j);
+                scene.add(space);
+            }
+        }
+
+        camera.position.z = 10;
+        camera.position.y = 5;
+        camera.lookAt(0, 0, 0);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            grid.rotation.z += 0.002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Window resize handler
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // KUTE.js animations for buttons
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                KUTE.fromTo(
+                    button,
+                    { scale: 1, rotate: 0 },
+                    { scale: 1.1, rotate: 2 },
+                    { duration: 400, easing: 'easingElasticOut' }
+                ).start();
+            });
+            button.addEventListener('mouseleave', () => {
+                KUTE.fromTo(
+                    button,
+                    { scale: 1.1, rotate: 2 },
+                    { scale: 1, rotate: 0 },
+                    { duration: 400, easing: 'easingElasticOut' }
+                ).start();
+            });
+        });
+    </script>
 </body>
 </html>

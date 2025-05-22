@@ -2,34 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Parking Spot Data Entry</title>
+    <title>Electric Vehicle Parking Form</title>
     <style>
         body {
-            background: #f5f7fa;
-            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
             display: flex;
             justify-content: center;
             padding: 40px;
+            min-height: 100vh;
+            align-items: center;
+            flex-direction: column;
         }
 
-        form {
-            background: white;
+        #three-canvas {
+            width: 300px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        form, .result {
+            background-color: rgba(255, 255, 255, 0.95);
             padding: 30px 40px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             max-width: 600px;
             width: 100%;
+            margin-bottom: 20px;
         }
 
         h2 {
             text-align: center;
             margin-bottom: 25px;
+            color: #333;
         }
 
         label {
             display: block;
             margin-top: 15px;
             font-weight: bold;
+            color: #333;
         }
 
         input, select {
@@ -39,80 +68,262 @@
             border-radius: 6px;
             border: 1px solid #ccc;
             font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
         }
 
         button {
             margin-top: 25px;
             padding: 12px 20px;
-            background-color: #0066cc;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 6px;
             width: 100%;
             font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #004a99;
+            background-color: #0056b3;
+        }
+
+        .result {
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .result.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .result p, .result li {
+            font-size: 16px;
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+
+        .result p strong, .result li strong {
+            color: #333;
+        }
+
+        .result h3 {
+            color: #007bff;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .result ul {
+            padding-left: 20px;
+        }
+
+        .result li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid #007bff;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #218838;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            font-size: 16px;
+            color: #007bff;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="nav-buttons">
+            <a href="/" class="nav-button">Back to Home</a>
+            <a href="/parking" class="nav-button">Parking Violation Form</a>
+        </div>
+        <canvas id="three-canvas"></canvas>
+        <form id="electric-form" action="/electric_submit" method="post" onsubmit="showLoading()">
+            <h2>Electric Vehicle Parking Data Entry</h2>
 
-<form action="/submit" method="post">
-    <h2>Parking Spot Data Entry</h2>
+            <label for="spot_id">Parking Spot ID</label>
+            <input type="number" id="spot_id" name="Parking_Spot_ID" min="1" required>
 
-    <label for="spot_id">Parking Spot ID</label>
-    <input type="text" id="spot_id" name="Parking_Spot_ID" required>
+            <label for="proximity">Sensor Reading Proximity</label>
+            <input type="number" step="any" id="proximity" name="Sensor_Reading_Proximity" required>
 
-    <label for="sensor">Sensor Reading Proximity</label>
-    <input type="number" step="any" id="sensor" name="Sensor_Reading_Proximity" required>
+            <label for="weight">Vehicle Type Weight (kg)</label>
+            <input type="number" step="any" id="weight" name="Vehicle_Type_Weight" required>
 
-    <label for="vehicle_weight">Vehicle Type Weight</label>
-    <select id="vehicle_weight" name="Vehicle_Type_Weight" required>
-        <option value="">--Select--</option>
-        <option value="Light">Light</option>
-        <option value="Medium">Medium</option>
-        <option value="Heavy">Heavy</option>
-    </select>
+            <label for="exit_time">Exit Time (Hour, 0-23)</label>
+            <input type="number" id="exit_time" name="Exit_Time" min="0" max="23" required>
 
-    <label for="exit_time">Exit Time</label>
-    <input type="time" id="exit_time" name="Exit_Time" required>
+            <label for="occupancy_rate">Occupancy Rate</label>
+            <input type="number" step="any" id="occupancy_rate" name="Occupancy_Rate" required>
 
-    <label for="reserved">Reserved Status</label>
-    <select id="reserved" name="Reserved_Status" required>
-        <option value="">--Select--</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-    </select>
+            <label for="lot_section">Parking Lot Section</label>
+            <select id="lot_section" name="Parking_Lot_Section" required>
+                <option value="">--Select--</option>
+                <option value="Zone A">Zone A</option>
+                <option value="Zone B">Zone B</option>
+                <option value="Zone C">Zone C</option>
+                <option value="Zone D">Zone D</option>
+            </select>
 
-    <label for="occupancy">Occupancy Rate (%)</label>
-    <input type="number" step="any" id="occupancy" name="Occupancy_Rate" required>
+            <label for="duration">Parking Duration (hours)</label>
+            <input type="number" id="duration" name="Parking_Duration" min="0" required>
 
-    <label for="section">Parking Lot Section</label>
-    <select id="section" name="Parking_Lot_Section" required>
-        <option value="">--Select--</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <!-- Add more as needed -->
-    </select>
+            <label for="noise_level">Environmental Noise Level</label>
+            <input type="number" step="any" id="noise_level" name="Environmental_Noise_Level" required>
 
-    <label for="duration">Parking Duration (minutes)</label>
-    <input type="number" id="duration" name="Parking_Duration" required>
+            <label for="proximity_exit">Proximity To Exit (m)</label>
+            <input type="number" step="any" id="proximity_exit" name="Proximity_To_Exit" required>
 
-    <label for="noise">Environmental Noise Level (dB)</label>
-    <input type="number" step="any" id="noise" name="Environmental_Noise_Level" required>
+            <label for="parking_history">User Parking History</label>
+            <input type="number" step="any" id="parking_history" name="User_Parking_History" required>
 
-    <label for="proximity">Proximity To Exit (meters)</label>
-    <input type="number" step="any" id="proximity" name="Proximity_To_Exit" required>
+            <button type="submit">Submit</button>
+        </form>
 
-    <label for="history">User Parking History (visits/month)</label>
-    <input type="number" step="any" id="history" name="User_Parking_History" required>
+        <div class="loading" id="loading">Processing...</div>
 
-    <button type="submit">Submit</button>
-</form>
+        {% if prediction %}
+        <div class="result show" id="result-section">
+            <h2>Submission Result</h2>
+            {% for key, value in data.items() %}
+                <p><strong>{{ key.replace('_', ' ') }}:</strong> {{ value }}</p>
+            {% endfor %}
+            <p><strong>Predicted Electric Vehicle Status:</strong> {{ prediction }}</p>
+            <h3>Explanation</h3>
+            <ul>
+                {% if explanation_points and explanation_points|length > 0 %}
+                    {% for point in explanation_points %}
+                        <li>{{ point }}</li>
+                    {% endfor %}
+                {% else %}
+                    <li class="error-message">Unable to generate explanation. Please try again later.</li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
 
+    <!-- Particle.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <!-- Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <!-- Kute.js -->
+    <script src="https://cdn.jsdelivr.net/npm/kute.js@2.2.4/kute.min.js"></script>
+    <script>
+        // Particle.js Initialization
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#007bff' },
+                shape: { type: 'circle', stroke: { width: 0, color: '#000000' } },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#007bff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // Three.js Initialization
+        const canvas = document.getElementById('three-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+        renderer.setSize(canvas.width, canvas.height);
+
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial({ color: 0x007bff, wireframe: true });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        camera.position.z = 2;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Kute.js Animations
+        Kute.fromTo(
+            '#electric-form',
+            { translateY: 100, opacity: 0 },
+            { translateY: 0, opacity: 1 },
+            { duration: 1000, easing: 'easingCubicOut' }
+        ).start();
+
+        if (document.getElementById('result-section')) {
+            Kute.fromTo(
+                '#result-section',
+                { scale: 0.8, opacity: 0 },
+                { scale: 1, opacity: 1 },
+                { duration: 800, easing: 'easingBackOut' }
+            ).start();
+        }
+
+        // Show loading indicator on form submission
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result-section')?.classList.remove('show');
+        }
+    </script>
 </body>
 </html>
